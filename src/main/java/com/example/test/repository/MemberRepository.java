@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 @Transactional
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
-
-    Member findByName(String beforeName);
+    /*
+    * 1. findByName 삭제
+    * */
 }
 
