@@ -3,6 +3,7 @@ package com.example.test.service;
 import com.example.test.domain.Member;
 import com.example.test.dto.MemberRequest;
 import com.example.test.dto.MemberResponse;
+import com.example.test.dto.UpdateMemberRequest;
 import com.example.test.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,10 +37,10 @@ public class MemberService {
 
 
     @Transactional
-    public void updateMember(MemberRequest memberRequest) {
-        Member member = memberRepository.findById(memberRequest.getId()).orElseThrow(()->new IllegalArgumentException("존재하지 않는 회원입니다."));
-        member.setId(memberRequest.getId());
-        member.setName(memberRequest.getName());
+    public void updateMember(Long id, UpdateMemberRequest updateMemberRequest) {
+        Member member = memberRepository.findById(id).orElseThrow(()->new IllegalArgumentException("존재하지 않는 회원입니다."));
+        member.setId(id);
+        member.setName(updateMemberRequest.getName());
     }
 
     @Transactional

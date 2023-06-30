@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @ToString
-public class MemberRequest {
+public class UpdateMemberRequest {
 
     private String name;
 }

@@ -2,13 +2,12 @@ package com.example.test.controller;
 
 import com.example.test.dto.MemberRequest;
 import com.example.test.dto.MemberResponse;
+import com.example.test.dto.UpdateMemberRequest;
 import com.example.test.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
@@ -38,9 +37,18 @@ public class TestController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> saveMember(@RequestBody MemberRequest memberRequest) {
+    public ResponseEntity saveMember(@RequestBody MemberRequest memberRequest) {
+
+
         MemberResponse memberResponse = memberService.saveMember(memberRequest);
-        return new ResponseEntity<>(this.createHttpHeaderWithLocation(memberResponse.getId()), HttpStatus.CREATED);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(memberResponse.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
     @DeleteMapping("/{id}")
@@ -48,18 +56,11 @@ public class TestController {
         memberService.deleteMember(id);
     }
 
-    @PutMapping
-    public ResponseEntity<Void> updateMember(@RequestBody MemberRequest memberRequest) {
-        memberService.updateMember(memberRequest);
-        return new ResponseEntity<>(this.createHttpHeaderWithLocation(memberRequest.getId()), HttpStatus.CREATED);
-    }
-    private HttpHeaders createHttpHeaderWithLocation(Long id) {
-        HttpHeaders responseHeader = new HttpHeaders();
-        String hostAddress = "localhost:8080";
-        URI location = UriComponentsBuilder.newInstance()
-                .path(hostAddress + "/member" + "/"+ id).build().toUri();
-        responseHeader.setLocation(location);
-        return responseHeader;
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateMember(@PathVariable Long id, @RequestBody UpdateMemberRequest updateMemberRequest) {
+        memberService.updateMember(id, updateMemberRequest);
+
+        return ResponseEntity.ok().build();
     }
 
 
