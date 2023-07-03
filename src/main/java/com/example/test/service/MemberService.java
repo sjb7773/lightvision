@@ -26,6 +26,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    // TODO : 1. IllegalArgumentException VS Not Found VS Bad Request 3개중에 자원이 존재하지 않을 경우 무엇을 반환해야하나요?
+    // TODO : 2. Controller와 Service 중에 사용자에게 데이터 반환하기 위해 객체 변한을 어디에서 수행하는게 좋을까요?
     public MemberResponse getMember(Long id) {
         Member member = memberRepository.findById(id).orElseThrow(()->new IllegalArgumentException("존재하지 않는 회원입니다."));
         return this.createMemberResponseFromMember(member);

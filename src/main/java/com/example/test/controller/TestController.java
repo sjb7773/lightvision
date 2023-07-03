@@ -32,7 +32,7 @@ public class TestController {
 
     private final MemberService memberService;
     @GetMapping("/{id}")
-    public ResponseEntity<MemberResponse> getMember(@PathVariable Long id) {
+    public ResponseEntity<?> getMember(@PathVariable Long id) {
         return ResponseEntity.ok().body(memberService.getMember(id));
     }
 
@@ -52,14 +52,14 @@ public class TestController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMember(@PathVariable Long id) {
+    public ResponseEntity deleteMember(@PathVariable Long id) {
         memberService.deleteMember(id);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateMember(@PathVariable Long id, @RequestBody UpdateMemberRequest updateMemberRequest) {
+    public ResponseEntity updateMember(@PathVariable Long id, @RequestBody UpdateMemberRequest updateMemberRequest) {
         memberService.updateMember(id, updateMemberRequest);
-
         return ResponseEntity.ok().build();
     }
 
